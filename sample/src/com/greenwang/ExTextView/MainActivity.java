@@ -6,8 +6,8 @@ import com.greenwang.ExpandableTextView.ExpandableTextView;
 import com.greenwang.ExpandableTextView.ExpandableTextView.CollapseListener;
 import com.greenwang.ExpandableTextViewSample.R;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +15,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends Activity {
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private ListView mListView;
 
@@ -119,7 +120,7 @@ public class MainActivity extends FragmentActivity {
             hodler.item = mList.get(position);
 
             hodler.exTextView.setText(mList.get(position).info, hodler.item.collapsed);
-            Log.e("==========", "" + hodler.exTextView.getText());
+            Log.e(TAG, "" + hodler.exTextView.getText());
             return convertView;
         }
 
@@ -129,11 +130,10 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void onExpandClicked(View view) {
-                Log.e("========", "Collapsed: " + item.collapsed);
+                Log.e(TAG, "Collapsed: " + item.collapsed);
                 item.collapsed = !exTextView.isCollapsed();
                 exTextView.setCollapse(item.collapsed);
-                // exTextView.setText(exTextView.getText() + "1", item.collapsed);
-                Log.e("========", "Collapsed: " + item.collapsed);
+                Log.e(TAG, "Collapsed: " + item.collapsed);
             }
         }
 
