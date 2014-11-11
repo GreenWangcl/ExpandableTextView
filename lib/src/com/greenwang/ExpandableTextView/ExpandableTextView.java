@@ -30,7 +30,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ExpandableTextView extends LinearLayout implements OnClickListener {
-
     private static final String TAG = ExpandableTextView.class.getSimpleName();
 
     // The default number of lines;
@@ -43,6 +42,8 @@ public class ExpandableTextView extends LinearLayout implements OnClickListener 
     private boolean mRelayout;
 
     private boolean mCollapsed = true; // Show short version as default.
+
+    private boolean mEnable = true; // Enable collapse.
 
     private int mMaxCollapsedLines;
 
@@ -84,9 +85,18 @@ public class ExpandableTextView extends LinearLayout implements OnClickListener 
         mListener = listener;
     }
 
+    public void setExpandEnable(boolean enable) {
+        mEnable = enable;
+        if (!mEnable) {
+            setCollapse(false);
+        } else {
+            requestLayout();
+        }
+    }
+
     @Override
     public void onClick(View view) {
-        if (mCollapseBtn.getVisibility() != View.VISIBLE) {
+        if (view.getId() != R.id.expand_collapse) {
             return;
         }
 
@@ -133,7 +143,7 @@ public class ExpandableTextView extends LinearLayout implements OnClickListener 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         // If the text fits in collapsed mode, we are done.
-        if (mTextView.getLineCount() <= mMaxCollapsedLines) {
+        if (mTextView.getLineCount() <= mMaxCollapsedLines || !mEnable) {
             return;
         }
 
@@ -174,7 +184,6 @@ public class ExpandableTextView extends LinearLayout implements OnClickListener 
         // mTextView.setTextColor(mTextColor);
         // mTextView.setTextSize(mTextSize);
         mTextView.setText(mText);
-        mTextView.setOnClickListener(this);
 
         mCollapseBtn = (TextView) findViewById(R.id.expand_collapse);
         // mCollapseBtn.setTextColor(mCollapseColor);
